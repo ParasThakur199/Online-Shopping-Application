@@ -1,8 +1,11 @@
 package com.shopping.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
@@ -15,7 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Product {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer productId;
 	private String title;
 	private String description;
@@ -23,9 +26,11 @@ public class Product {
 	private Integer quantity;
 	private Integer price;
 	private String image;
+	
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Category category;
 	
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Cart cart;
 }

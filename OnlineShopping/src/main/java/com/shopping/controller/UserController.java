@@ -19,7 +19,7 @@ public class UserController {
 	
 	@GetMapping("/data")
 	public ResponseEntity<String> getdata(){
-		return ResponseEntity.ok("data aa gya");
+		return ResponseEntity.ok("Testing purpose");
 	}
 	
 	@PostMapping("/users")
