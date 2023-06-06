@@ -1,7 +1,5 @@
 package com.shopping.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +14,16 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public User saveUserDetails(User user) {
-		List<User> allUser = userRepository.findAll();
-		for(User u : allUser) {
-			if(u.getEmailId().equals(user.getEmailId())) {
-				throw new RuntimeException("User Already Exist !! Please use different EmailId");
-			}
-		}
-		return userRepository.save(user);
+//		List<User> allUser = userRepository.findAll();
+//		for(User u : allUser) {
+//			if(u.getEmailId().equals(user.getEmailId())) {
+//				throw new RuntimeException("User Already Exist !! Please use different EmailId");
+//			}
+//		}
+			if (userRepository.existsByEmailId(user.getEmailId())) {
+		        throw new RuntimeException("User Already Exists! Please use a different EmailId.");
+		    }
+			return userRepository.save(user);
 	}
 				
 			

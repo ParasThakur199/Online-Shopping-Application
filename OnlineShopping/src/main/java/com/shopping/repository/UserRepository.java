@@ -8,5 +8,7 @@ import com.shopping.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer>{
 	
-	public User findByEmailId(String emailId);  
+	public User findByEmailId(String emailId);
+
+	public boolean existsByEmailId(String emailId);  
 }
