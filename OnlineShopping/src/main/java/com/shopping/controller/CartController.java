@@ -6,33 +6,44 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shopping.model.Cart;
 import com.shopping.model.Product;
+import com.shopping.repository.CartRepository;
 import com.shopping.service.CartService;
 
 @RestController
+@RequestMapping("/carts")
 public class CartController {
 
 	@Autowired
 	private CartService cartService;
 	
-	@PostMapping("/carts/create")
+	public CartController(CartService cartService) {
+		this.cartService = cartService;
+	}
+	
+	@PostMapping("/")
 	public ResponseEntity<Cart> createCartHandler(){
-		Cart cart = cartService.createCart();
-		return new ResponseEntity<Cart>(cart,HttpStatus.OK);
+		Cart cart = new Cart();
+		Cart res = cartService.createCart(cart);
+		return new ResponseEntity<Cart>(res,HttpStatus.CREATED);
 	}
 	
-	@GetMapping("/carts/{cartId}/product/{productId}")
-	public ResponseEntity<Product> selectProductFromCartHandler(@PathVariable Integer cartId,@PathVariable Integer productId){
-		Product res = cartService.selectProductFromCart(cartId, productId);
-		return new ResponseEntity<Product>(res,HttpStatus.ACCEPTED);
+	
+	@GetMapping("/{cartId}/totalprice")
+	public ResponseEntity<Double> calculateTotalPrice(@PathVariable Integer cartId){
+		Cart cart = cartService.getCartById(cartId);
+		Double res = cartService.calculateTotalPrice(cart);
+		return new ResponseEntity<>(res,HttpStatus.FOUND); 
 	}
 	
-	@GetMapping("/carts/{cartId}")
-	public ResponseEntity<Integer> getAllProductsTotalPrice(@PathVariable Integer cartId){
-		Integer res = cartService.totalAllProductsPrice(cartId);
-		return new ResponseEntity<Integer>(res,HttpStatus.FOUND);
+	@PostMapping("/{cartId}/products/{productId}")
+	public ResponseEntity<Boolean> setProductToCartHandler(@PathVariable Integer cartId, @PathVariable Integer productId){
+		Boolean res = cartService.setProductToCart(cartId, productId);
+		return new ResponseEntity<Boolean>(res,HttpStatus.ACCEPTED);
 	}
 }

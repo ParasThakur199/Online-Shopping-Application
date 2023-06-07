@@ -1,5 +1,6 @@
 package com.shopping.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -21,6 +22,14 @@ public class Cart {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer cartId;
 	@OneToMany(mappedBy = "cart",cascade = CascadeType.ALL)
-	private List<Product> product;
-	private Double totalPrice;
+	private List<Product> product = new ArrayList<>();
+
+	public double getTotalPrice() {
+		double totalPrice = 0;
+		for(Product prod : product) {
+			totalPrice += prod.getPrice() * prod.getQuantity();
+		}
+		return totalPrice;
+	}
+	
 }
