@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.shopping.model.Cart;
@@ -20,39 +21,35 @@ public class CartServiceImpl implements CartService {
 	@Autowired
 	private ProductRepository productRepository;
 	
+
 	@Override
-	public Cart createCart() {
-		Cart cart = new Cart();
-		return cartRepository.save(cart);
+	public double calculateTotalPrice(Cart cart) {
+		return cart.getTotalPrice();
 	}
 
 	@Override
-	public Product selectProductFromCart(Integer cartId, Integer productId) {
-		Cart cart = cartRepository.findById(cartId).orElse(null);
-		if(cart != null) {
-			for(Product prod : cart.getProduct()) {
-				if(prod.getProductId().equals(productId)){
-					return prod;
-				}
-			}
-		}
-		return null;
+	public Cart getCartById(Integer cartId) {
+		return cartRepository.findById(cartId).orElseThrow(()->new IllegalArgumentException("Cart not found with ID: " + cartId));
 	}
 
 	@Override
-	public Integer totalAllProductsPrice(Integer cartId) {
-		Integer totalPrice = 0;
-		Optional<Cart> cartCheck = cartRepository.findById(cartId);
-		if(cartCheck.isPresent()) {
-			List<Product> cart = cartCheck.get().getProduct();
-			for(Product c: cart) {
-				totalPrice += c.getPrice() * c.getQuantity();
-			}
-		}else {
-			throw new RuntimeException("Cart is Empty");
-		}
-		return totalPrice;
+	public Cart createCart(Cart cart) {
+		return cartRepository.save(cart); 
 	}
+
+
+	@Override
+	public Boolean setProductToCart(Integer cartId, Integer productId) {
+		Product product = productRepository.findById(productId).orElseThrow(()-> new RuntimeException("Product not present"));
+
+		Cart cart = cartRepository.findById(cartId).orElseThrow(()-> new RuntimeException("Cart not present"));
+
+		product.setCart(cart);
+		productRepository.save(product);
+		return true;
+	}
+
+
 			
 
 }

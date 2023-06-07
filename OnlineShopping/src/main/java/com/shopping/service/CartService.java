@@ -1,17 +1,16 @@
 package com.shopping.service;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.PathVariable;
-
 import com.shopping.model.Cart;
-import com.shopping.model.Product;
 
 public interface CartService {
 	
-	public Cart createCart();
+	public Cart createCart(Cart cart);
 	
-	public Integer totalAllProductsPrice(Integer cartId);
+	public Boolean setProductToCart(Integer cartId, Integer productId);
 	
-	public Product selectProductFromCart(Integer cartId,Integer productId);
+	public double calculateTotalPrice(Cart cart);
+	
+	public Cart getCartById(Integer cartId);
+	
+	
 }
