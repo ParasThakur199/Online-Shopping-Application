@@ -33,7 +33,6 @@ public class CartController {
 		return new ResponseEntity<Cart>(res,HttpStatus.CREATED);
 	}
 	
-	
 	@GetMapping("/{cartId}/totalprice")
 	public ResponseEntity<Double> calculateTotalPrice(@PathVariable Integer cartId){
 		Cart cart = cartService.getCartById(cartId);
