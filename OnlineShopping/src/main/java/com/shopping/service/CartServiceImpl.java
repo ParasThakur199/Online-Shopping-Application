@@ -49,6 +49,18 @@ public class CartServiceImpl implements CartService {
 		return true;
 	}
 
+	@Override
+	public String removeProductFromCart(Integer cartId, Integer productId) {
+		Cart cart = cartRepository.findById(cartId).orElseThrow(()->new RuntimeException("cartId not Present"));
+		
+		List<Product> products = cart.getProduct();
+		products.removeIf(product->product.getProductId().equals(productId));
+		cartRepository.save(cart);
+		return "Record Removed Successfully";
+	}
+
+	
+
 
 			
 

@@ -46,4 +46,10 @@ public class CartController {
 		Boolean res = cartService.setProductToCart(cartId, productId);
 		return new ResponseEntity<Boolean>(res,HttpStatus.ACCEPTED);
 	}
+	
+	@PostMapping("/{cartId}/remove/products/{productId}")
+	public ResponseEntity<String> removeSpecificProductFromCart(@PathVariable Integer cartId, @PathVariable Integer productId){
+		String res = cartService.removeProductFromCart(cartId, productId);
+		return new ResponseEntity<String>(res,HttpStatus.GONE);
+	}
 }
