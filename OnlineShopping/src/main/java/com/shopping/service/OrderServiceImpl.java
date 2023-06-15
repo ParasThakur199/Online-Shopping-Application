@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shopping.model.Order;
+import com.shopping.model.OrderStatus;
 import com.shopping.model.User;
 import com.shopping.repository.OrderRepository;
 
@@ -58,28 +59,37 @@ public class OrderServiceImpl implements OrderService {
 	    }
 	}
 
+
 	@Override
-	public void deleteOrder(Integer orderId) {
-		// TODO Auto-generated method stub
-		
+	public String deleteOrder(Integer orderId) {
+	    if (orderRepository.existsById(orderId)) {
+	        orderRepository.deleteById(orderId);
+	        return "Order Deleted Successfully";
+	    } else {
+	        throw new RuntimeException("Order not found");
+	    }
+	}
+
+
+	@Override
+	public String cancelOrder(Order order) {
+		order.setOrderStatus(OrderStatus.CANCELED);
+		orderRepository.save(order);
+		return "Order Cancelled Successfully";
 	}
 
 	@Override
-	public void cancelOrder(Order order) {
-		// TODO Auto-generated method stub
-		
+	public String processOrder(Order order) {
+		order.setOrderStatus(OrderStatus.PROCESSING);
+		orderRepository.save(order);
+		return "Order is being processed";
 	}
 
 	@Override
-	public void processOrder(Order order) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void completeOrder(Order order) {
-		// TODO Auto-generated method stub
-		
+	public String completeOrder(Order order) {
+		order.setOrderStatus(OrderStatus.COMPLETED);
+		orderRepository.save(order);
+		return "Order Completed Successfully";
 	}
 
 }

@@ -17,11 +17,11 @@ public interface OrderService {
 	    
 	public Order updateOrder(Order order);
 	    
-	public void deleteOrder(Integer orderId);
+	public String deleteOrder(Integer orderId);
 	    
-	public void cancelOrder(Order order);
+	public String cancelOrder(Order order);
 	    
-	public void processOrder(Order order);
+	public String processOrder(Order order);
 	    
-	public void completeOrder(Order order);
+	public String completeOrder(Order order);
 }
