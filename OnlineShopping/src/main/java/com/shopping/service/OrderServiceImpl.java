@@ -33,20 +33,29 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public List<Order> getOrdersByUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		return orderRepository.findByUser(user);
 	}
 
 	@Override
 	public Order createOrder(Order order) {
-		// TODO Auto-generated method stub
-		return null;
+		return orderRepository.save(order);
 	}
 
 	@Override
 	public Order updateOrder(Order order) {
-		// TODO Auto-generated method stub
-		return null;
+	    Optional<Order> OrderCheck = orderRepository.findById(order.getOrderId());
+	    if (OrderCheck.isPresent()) {
+	        Order completeOrder = OrderCheck.get();
+	        
+	        completeOrder.setOrder_date(order.getOrder_date());
+	        completeOrder.setQuantity(order.getQuantity());
+	        completeOrder.setOrderStatus(order.getOrderStatus());
+	        completeOrder.setUser(order.getUser());
+	        
+	        return orderRepository.save(completeOrder);
+	    } else {
+	        throw new RuntimeException("Order not found");
+	    }
 	}
 
 	@Override
