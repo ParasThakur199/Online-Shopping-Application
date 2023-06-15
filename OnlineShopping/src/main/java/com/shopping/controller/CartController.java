@@ -49,6 +49,6 @@ public class CartController {
 	@PostMapping("/{cartId}/remove/products/{productId}")
 	public ResponseEntity<String> removeSpecificProductFromCart(@PathVariable Integer cartId, @PathVariable Integer productId){
 		String res = cartService.removeProductFromCart(cartId, productId);
-		return new ResponseEntity<String>(res,HttpStatus.GONE);
+		return new ResponseEntity<String>(res,HttpStatus.ACCEPTED);
 	}
 }

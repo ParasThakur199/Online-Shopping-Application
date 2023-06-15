@@ -32,4 +32,8 @@ public class Cart {
 		return totalPrice;
 	}
 	
+    public void setProducts(List<Product> product) {
+        this.product = product;
+    }
+	
 }
