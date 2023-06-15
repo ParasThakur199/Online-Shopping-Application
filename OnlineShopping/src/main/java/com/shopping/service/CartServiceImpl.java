@@ -49,6 +49,47 @@ public class CartServiceImpl implements CartService {
 		return true;
 	}
 
+//	@Override
+//	public String removeProductFromCart(Integer cartId, Integer productId) {
+//		Cart cart = cartRepository.findById(cartId).orElseThrow(()->new RuntimeException("cartId not Present"));
+//		
+//		List<Product> products = cart.getProduct();
+//		boolean removed = products.removeIf(product->product.getProductId().equals(productId));
+//		if(removed) {
+//			for(Product product: products) {
+//				if(product.getProductId().equals(productId)) {
+//					product.setCart(null);
+//					break;
+//				}
+//			}
+//			cartRepository.save(cart);
+//			return "Record Removed Successfully";
+//		}else {
+//			return "Product not found in the cart";
+//		}
+//	}
+
+	@Override
+	public String removeProductFromCart(Integer cartId, Integer productId) {
+	    Cart cart = cartRepository.findById(cartId)
+	            .orElseThrow(() -> new RuntimeException("Cart not found"));
+
+	    Optional<Product> productOptional = productRepository.findById(productId);
+	    if (productOptional.isPresent()) {
+	        Product product = productOptional.get();
+	        if (product.getCart() != null && product.getCart().equals(cart)) {
+	            product.setCart(null);
+	            productRepository.save(product);
+	            return "Record removed successfully";
+	        } else {
+	            return "Product is not associated with the cart";
+	        }
+	    } else {
+	        return "Product not found";
+	    }
+	}
+
+
 
 			
 

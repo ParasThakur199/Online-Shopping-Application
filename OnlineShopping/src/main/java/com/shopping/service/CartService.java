@@ -12,5 +12,7 @@ public interface CartService {
 	
 	public Cart getCartById(Integer cartId);
 	
+	public String removeProductFromCart(Integer cartId, Integer productId);
+	
 	
 }
