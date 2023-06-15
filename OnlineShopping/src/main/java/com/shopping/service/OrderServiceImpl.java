@@ -1,6 +1,7 @@
 package com.shopping.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,14 +18,17 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public List<Order> getAllOrders() {
-		// TODO Auto-generated method stub
-		return null;
+		return orderRepository.findAll();
 	}
 
 	@Override
 	public Order getOrderById(Integer orderId) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Order> order = orderRepository.findById(orderId);
+		if(order.isPresent()) {
+			return order.get();
+		}else {
+			throw new RuntimeException("Order not found");
+		}
 	}
 
 	@Override
